@@ -118,9 +118,9 @@ def task():
 	# if the `q` key is pressed, break from the lop
 	if key == ord("q"):
 		exit()
-    elif key == ord("s"):
-        pickle.dump(self.params, open(CIRCLE_PARAMS_FILEPATH, 'wb'))
-        exit()
+        elif key == ord("s"):
+            pickle.dump(self.params, open(CIRCLE_PARAMS_FILEPATH, 'wb'))
+            exit()
 
 	master.after(20, task)
 

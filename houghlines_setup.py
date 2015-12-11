@@ -64,18 +64,18 @@ threshold.set(HOUGHLINES_PARAMS['threshold'])
 threshold.pack()
 
 if len(sys.argv) > 1:
-        image = cv2.imread(sys.argv[1])
-        image = imutils.resize(image, width=1120)
+    image = cv2.imread(sys.argv[1])
+    image = imutils.resize(image, width=1120)
         
 else:
-        camera = PiCamera()
-        camera.resolution = (1120, 630)
-        rawCapture = PiRGBArray(camera, size=(1120, 630))
+    camera = PiCamera()
+    camera.resolution = (1120, 630)
+    rawCapture = PiRGBArray(camera, size=(1120, 630))
 
-        time.sleep(0.1)
+    time.sleep(0.1)
 
-        camera.capture(rawCapture, format="bgr")
-        image = rawCapture.array
+    camera.capture(rawCapture, format="bgr")
+    image = rawCapture.array
 
 
 def task():

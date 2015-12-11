@@ -9,7 +9,15 @@ from music import *
 
 class Staff:
 
-	def __init__(self, image, min_staff_length, min_vert_length):
+	def __init__(self, image, min_staff_length, min_vert_length, 
+		CANNY_THRESHOLD1=50, CANNY_THRESHOLD2=150, CANNY_APERTURESIZE=3, RHO=1, THETA=180, THRESHOLD=200):
+		self.CANNY_THRESHOLD1 = CANNY_THRESHOLD1
+		self.CANNY_THRESHOLD2 = CANNY_THRESHOLD2
+		self.CANNY_APERTURESIZE = CANNY_APERTURESIZE
+		self.RHO = RHO
+		self.THETA = THETA
+		self.THRESHOLD = THRESHOLD
+
 		self.image = image
 		height, width, channels = self.image.shape
 		self.image_height = height
@@ -18,13 +26,13 @@ class Staff:
 		self.min_vert_length = min_vert_length
 
 		self.gray = cv2.cvtColor(self.image,cv2.COLOR_BGR2GRAY)
-		self.edges = cv2.Canny(self.gray,50,150,apertureSize = 3)
+		self.edges = cv2.Canny(self.gray,self.CANNY_THRESHOLD1,self.CANNY_THRESHOLD2,apertureSize = self.CANNY_APERTURESIZE)
 		self.staff_lines = []
 		self.vertical_lines = []
 		self.staff_spaces = []
 
 	def find_staff_lines(self):
-		all_staff_lines = cv2.HoughLines(self.edges,1,np.pi/180, self.min_staff_length)
+		all_staff_lines = cv2.HoughLines(self.edges,self.RHO,np.pi/self.THETA, self.min_staff_length)
 		hori_lines, _ = self.filter_orient_size_and_outliers(all_staff_lines)
 
 		staff_line_groups = self.group_staff_lines(hori_lines)
@@ -41,7 +49,7 @@ class Staff:
 
 
 	def find_vert_lines(self):
-		all_vert_lines = cv2.HoughLines(self.edges,1,np.pi/180, self.min_vert_length)
+		all_vert_lines = cv2.HoughLines(self.edges,self.RHO,np.pi/self.THETA, self.min_vert_length)
 		_, vert_lines = self.filter_orient_size_and_outliers(all_vert_lines)
 
 		vert_line_groups = self.group_vert_lines(vert_lines)
@@ -336,7 +344,22 @@ class Staff:
 
 class Staffy:
 
-	def __init__(self, image, min_staff_length, min_vert_length, m1_start, m2_start):
+	def __init__(self, image, min_staff_length, min_vert_length, m1_start, m2_start, 
+		CANNY_THRESHOLD1=50, CANNY_THRESHOLD2=150, CANNY_APERTURESIZE=3, RHO=1, THETA=180, THRESHOLD=200,
+		DP=1, MINDIST=33, PARAM1=51, PARAM2=27, MINRADIUS=9, MAXRADIUS=25):
+		self.CANNY_THRESHOLD1 = CANNY_THRESHOLD1
+		self.CANNY_THRESHOLD2 = CANNY_THRESHOLD2
+		self.CANNY_APERTURESIZE = CANNY_APERTURESIZE
+		self.RHO = RHO
+		self.THETA = THETA
+		self.THRESHOLD = THRESHOLD
+		self.DP = DP
+		self.MINDIST = MINDIST
+		self.PARAM1 = PARAM1
+		self.PARAM2 = PARAM2
+		self.MINRADIUS = MINRADIUS
+		self.MAXRADIUS = MAXRADIUS
+
 		self.image = image
 		height, width, channels = self.image.shape
 		self.image_height = height
@@ -347,7 +370,7 @@ class Staffy:
 		self.m2_start = m2_start
 
 		self.gray = cv2.cvtColor(self.image,cv2.COLOR_BGR2GRAY)
-		self.edges = cv2.Canny(self.gray,50,150,apertureSize = 3)
+		self.edges = cv2.Canny(self.gray,self.CANNY_THRESHOLD1,self.CANNY_THRESHOLD2,apertureSize = self.CANNY_APERTURESIZE)
 
 		self.staff_lines = []
 		self.vertical_lines = []
@@ -364,7 +387,7 @@ class Staffy:
 		self.build_columns()
 
 	def find_staff_lines(self):
-		all_staff_lines = cv2.HoughLines(self.edges,1,np.pi/180, self.min_staff_length)
+		all_staff_lines = cv2.HoughLines(self.edges,self.RHO,np.pi/self.THETA, self.min_staff_length)
 		hori_lines, _ = self.filter_orient_size_and_outliers(all_staff_lines)
 
 		staff_line_groups = self.group_staff_lines(hori_lines)
@@ -398,8 +421,10 @@ class Staffy:
 		blur = cv2.medianBlur(self.image,5)
 		gray = cv2.cvtColor(blur,cv2.COLOR_BGR2GRAY)
 
-		circles = cv2.HoughCircles(gray,cv2.HOUGH_GRADIENT,1,int(self.image_width/25.0),
-                            param1=50,param2=30,minRadius=0,maxRadius=int(self.image_width/40.0))
+		# circles = cv2.HoughCircles(gray,cv2.HOUGH_GRADIENT,1,int(self.image_width/25.0),
+  #                           param1=50,param2=30,minRadius=0,maxRadius=int(self.image_width/40.0))
+		circles = cv2.HoughCircles(gray,cv2.HOUGH_GRADIENT,self.DP,self.MINDIST,
+                            param1=self.PARAM1,param2=self.PARAM2,minRadius=self.MINRADIUS,maxRadius=self.MAXRADIUS)
 		self.circles = np.uint16(np.around(circles))
 		
 		centers = []

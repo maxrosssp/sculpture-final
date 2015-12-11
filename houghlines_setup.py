@@ -89,38 +89,38 @@ def task():
     				apertureSize = canny_apertureSize.get())
 
     lines = cv2.HoughLines(edges,1,np.pi/180,200)
-	if lines != None:
-		for line in lines:
-			rho,theta = line[0]
-			a = np.cos(theta)
-			b = np.sin(theta)
-			x0 = a*rho
-			y0 = b*rho
-			x1 = int(x0 + 1000*(-b))
-			y1 = int(y0 + 1000*(a))
-			x2 = int(x0 - 1000*(-b))
-			y2 = int(y0 - 1000*(a))
+    if lines != None:
+            for line in lines:
+                    rho,theta = line[0]
+                    a = np.cos(theta)
+                    b = np.sin(theta)
+                    x0 = a*rho
+                    y0 = b*rho
+                    x1 = int(x0 + 1000*(-b))
+                    y1 = int(y0 + 1000*(a))
+                    x2 = int(x0 - 1000*(-b))
+                    y2 = int(y0 - 1000*(a))
 
-			cv2.line(frame,(x1,y1),(x2,y2),(0,0,255),2)
-	
-	cv2.imshow("Lines", clean_image)
+                    cv2.line(clean_image,(x1,y1),(x2,y2),(0,0,255),2)
+    
+    cv2.imshow("Lines", clean_image)
 
-	key = cv2.waitKey(1)
+    key = cv2.waitKey(1)
 
-	# if the `q` key is pressed, break from the lop
-	if key == ord("q"):
-		exit()
-        elif key == ord("s"):
-            HOUGHLINES_PARAMS['canny_threshold1'] = canny_threshold1.get()
-            HOUGHLINES_PARAMS['canny_threshold2'] = canny_threshold2.get()
-            HOUGHLINES_PARAMS['canny_apertureSize'] = canny_apertureSize.get()
-            HOUGHLINES_PARAMS['rho'] = rho.get()
-            HOUGHLINES_PARAMS['theta'] = theta.get()
-            HOUGHLINES_PARAMS['threshold'] = threshold.get()
-            pickle.dump(HOUGHLINES_PARAMS, open(HOUGHLINES_PARAMS_FILEPATH, 'wb'))
+    # if the `q` key is pressed, break from the lop
+    if key == ord("q"):
             exit()
+    elif key == ord("s"):
+        HOUGHLINES_PARAMS['canny_threshold1'] = canny_threshold1.get()
+        HOUGHLINES_PARAMS['canny_threshold2'] = canny_threshold2.get()
+        HOUGHLINES_PARAMS['canny_apertureSize'] = canny_apertureSize.get()
+        HOUGHLINES_PARAMS['rho'] = rho.get()
+        HOUGHLINES_PARAMS['theta'] = theta.get()
+        HOUGHLINES_PARAMS['threshold'] = threshold.get()
+        pickle.dump(HOUGHLINES_PARAMS, open(HOUGHLINES_PARAMS_FILEPATH, 'wb'))
+        exit()
 
-	master.after(20, task)
+    master.after(20, task)
 
 master.after(20, task)
 master.mainloop()

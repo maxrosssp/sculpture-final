@@ -10,7 +10,7 @@ import os
 from Tkinter import *
 import cPickle as pickle
 
-PARAMS_FILEPATH = 'data/params.p'
+CIRCLE_PARAMS_FILEPATH = 'data/circle_params.p'
 
 class MainSetup(Frame):
     
@@ -140,12 +140,12 @@ class MainSetup(Frame):
 
     def finish(self):
 
-        pickle.dump(self.params, open(PARAMS_FILEPATH, 'wb'))
+        pickle.dump(self.params, open(CIRCLE_PARAMS_FILEPATH, 'wb'))
         root.quit()
      
 PARAMS = None
 try:
-    PARAMS = pickle.load( open(PARAMS_FILEPATH, 'rb') )
+    PARAMS = pickle.load( open(CIRCLE_PARAMS_FILEPATH, 'rb') )
 except:
     print "Unable to load saved parameters. Using defaults."
     PARAMS = {

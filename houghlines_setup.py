@@ -65,6 +65,9 @@ threshold.pack()
 
 if len(sys.argv) > 1:
     image = cv2.imread(sys.argv[1])
+    if 'cropped' not in sys.argv[1]:
+        height, width, channels = image.shape
+        image = image[.075*height:(1-.075)*height, 0:width]
     image = imutils.resize(image, width=800)
         
 else:

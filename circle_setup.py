@@ -119,7 +119,13 @@ def task():
 	if key == ord("q"):
 		exit()
         elif key == ord("s"):
-            pickle.dump(self.params, open(CIRCLE_PARAMS_FILEPATH, 'wb'))
+            CIRCLE_PARAMS['dp'] = dp.get()
+            CIRCLE_PARAMS['minDist'] = minDist.get()
+            CIRCLE_PARAMS['param1'] = param1.get()
+            CIRCLE_PARAMS['param2'] = param2.get()
+            CIRCLE_PARAMS['minRadius'] = minRadius.get()
+            CIRCLE_PARAMS['maxRadius'] = maxRadius.get()
+            pickle.dump(CIRCLE_PARAMS, open(CIRCLE_PARAMS_FILEPATH, 'wb'))
             exit()
 
 	master.after(20, task)

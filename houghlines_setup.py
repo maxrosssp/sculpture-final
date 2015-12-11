@@ -95,11 +95,11 @@ def task():
                 )
     if lines != None:
             for line in lines:
-                    rho,theta = line[0]
-                    a = np.cos(theta)
-                    b = np.sin(theta)
-                    x0 = a*rho
-                    y0 = b*rho
+                    rho_x,theta_x = line[0]
+                    a = np.cos(theta_x)
+                    b = np.sin(theta_x)
+                    x0 = a*rho_x
+                    y0 = b*rho_x
                     x1 = int(x0 + 1000*(-b))
                     y1 = int(y0 + 1000*(a))
                     x2 = int(x0 - 1000*(-b))

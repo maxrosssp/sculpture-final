@@ -70,7 +70,7 @@ else:
 
 def task():
 ##        clean_image = imutils.resize(staffer.staffy.image, width=1000)
-        clean_image = image
+        clean_image = image.copy()
         blur = cv2.medianBlur(clean_image,1)
         gray = cv2.cvtColor(blur,cv2.COLOR_BGR2GRAY)
 

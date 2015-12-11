@@ -29,37 +29,37 @@ except:
 master = Tk()
 canny_threshold1_label = Label(master, text="canny_threshold1")
 canny_threshold1_label.pack()
-canny_threshold1 = Scale(master, from_=1, to=5, orient=HORIZONTAL)
+canny_threshold1 = Scale(master, from_=1, to=300, orient=HORIZONTAL)
 canny_threshold1.set(HOUGHLINES_PARAMS['canny_threshold1'])
 canny_threshold1.pack()
 
 canny_threshold2_label = Label(master, text="canny_threshold2")
 canny_threshold2_label.pack()
-canny_threshold2 = Scale(master, from_=1, to=100, orient=HORIZONTAL)
+canny_threshold2 = Scale(master, from_=1, to=300, orient=HORIZONTAL)
 canny_threshold2.set(HOUGHLINES_PARAMS['canny_threshold2'])
 canny_threshold2.pack()
 
 canny_apertureSize_label = Label(master, text="canny_apertureSize")
 canny_apertureSize_label.pack()
-canny_apertureSize = Scale(master, from_=1, to=265, orient=HORIZONTAL)
-canny_apertureSize.set(HOUGHLINES_PARAMS['canny_apertureSize'])
+canny_apertureSize = Scale(master, from_=1, to=3, orient=HORIZONTAL)
+canny_apertureSize.set((HOUGHLINES_PARAMS['canny_apertureSize']+1)/2)
 canny_apertureSize.pack()
 
 rho_label = Label(master, text="rho")
 rho_label.pack()
-rho = Scale(master, from_=1, to=100, orient=HORIZONTAL)
+rho = Scale(master, from_=1, to=10, orient=HORIZONTAL)
 rho.set(HOUGHLINES_PARAMS['rho'])
 rho.pack()
 
 theta_label = Label(master, text="x (theta=pi/x)")
 theta_label.pack()
-theta = Scale(master, from_=0, to=50, orient=HORIZONTAL)
+theta = Scale(master, from_=1, to=360, orient=HORIZONTAL)
 theta.set(HOUGHLINES_PARAMS['theta'])
 theta.pack()
 
 threshold_label = Label(master, text="threshold")
 threshold_label.pack()
-threshold = Scale(master, from_=0, to=200, orient=HORIZONTAL)
+threshold = Scale(master, from_=0, to=800, orient=HORIZONTAL)
 threshold.set(HOUGHLINES_PARAMS['threshold'])
 threshold.pack()
 
@@ -82,13 +82,17 @@ def task():
 ##        clean_image = imutils.resize(staffer.staffy.image, width=1000)
     clean_image = image.copy()
     gray = cv2.cvtColor(clean_image, cv2.COLOR_BGR2GRAY)
-    edges = cv2.Canny(
-    				gray,
+    edges = cv2.Canny(gray,
     				canny_threshold1.get(),
     				canny_threshold2.get(),
-    				apertureSize = canny_apertureSize.get())
+    				apertureSize = ((canny_apertureSize.get()*2) - 1)
+                )
 
-    lines = cv2.HoughLines(edges,1,np.pi/180,200)
+    lines = cv2.HoughLines(edges,
+                    rho.get(),
+                    np.pi/theta.get(),
+                    threshold.get()
+                )
     if lines != None:
             for line in lines:
                     rho,theta = line[0]
@@ -113,7 +117,7 @@ def task():
     elif key == ord("s"):
         HOUGHLINES_PARAMS['canny_threshold1'] = canny_threshold1.get()
         HOUGHLINES_PARAMS['canny_threshold2'] = canny_threshold2.get()
-        HOUGHLINES_PARAMS['canny_apertureSize'] = canny_apertureSize.get()
+        HOUGHLINES_PARAMS['canny_apertureSize'] = ((canny_apertureSize.get()*2) - 1)
         HOUGHLINES_PARAMS['rho'] = rho.get()
         HOUGHLINES_PARAMS['theta'] = theta.get()
         HOUGHLINES_PARAMS['threshold'] = threshold.get()

@@ -29,13 +29,13 @@ except:
 master = Tk()
 canny_threshold1_label = Label(master, text="canny_threshold1")
 canny_threshold1_label.pack()
-canny_threshold1 = Scale(master, from_=1, to=300, orient=HORIZONTAL)
+canny_threshold1 = Scale(master, from_=1, to=800, orient=HORIZONTAL)
 canny_threshold1.set(HOUGHLINES_PARAMS['canny_threshold1'])
 canny_threshold1.pack()
 
 canny_threshold2_label = Label(master, text="canny_threshold2")
 canny_threshold2_label.pack()
-canny_threshold2 = Scale(master, from_=1, to=300, orient=HORIZONTAL)
+canny_threshold2 = Scale(master, from_=1, to=800, orient=HORIZONTAL)
 canny_threshold2.set(HOUGHLINES_PARAMS['canny_threshold2'])
 canny_threshold2.pack()
 

@@ -65,7 +65,7 @@ threshold.pack()
 
 if len(sys.argv) > 1:
     image = cv2.imread(sys.argv[1])
-    image = imutils.resize(image, width=1000)
+    image = imutils.resize(image, width=800)
         
 else:
     camera = PiCamera()

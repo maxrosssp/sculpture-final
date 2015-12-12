@@ -19,6 +19,7 @@ TEMPO = 110
 
 if len(sys.argv) > 1:
 	image = cv2.imread(sys.argv[1])
+	image = imutils.resize(image, width=1120)
 
 elif platform.system() == 'Linux':
 

@@ -1,11 +1,12 @@
-from picamera.array import PiRGBArray
-from picamera import PiCamera
+import platform
+
 import imutils
 import time
 import cv2
 from staff import Staffer
 from music import Player
 import os
+import sys
 
 ## !!!!!!!!!!!!!!!!!!!!
 ## To set audio output to HDMI: > amixer cset numid=3 2
@@ -17,18 +18,28 @@ MIN_AREA = 1200
 SECONDS_TO_RESET = 20
 TEMPO = 110
 
+if len(sys.args) > 1:
+	image = cv2.imread(sys.args[1])
 
-# initialize the camera and grab a reference to the raw camera capture
-camera = PiCamera()
-camera.resolution = (1280, 720)
-rawCapture = PiRGBArray(camera, size=(1280, 720))
- 
-# allow the camera to warmup
-time.sleep(0.1)
- 
-# grab an image from the camera
-camera.capture(rawCapture, format="bgr")
-image = rawCapture.array
+elif platform.system() == 'Linux':
+
+	from picamera.array import PiRGBArray
+	from picamera import PiCamera
+	# initialize the camera and grab a reference to the raw camera capture
+	camera = PiCamera()
+	camera.resolution = (1280, 720)
+	rawCapture = PiRGBArray(camera, size=(1280, 720))
+	 
+	# allow the camera to warmup
+	time.sleep(0.1)
+	 
+	# grab an image from the camera
+	camera.capture(rawCapture, format="bgr")
+	image = rawCapture.array
+
+else:
+	image = cv2.imread('/Users/mspiegelman/Desktop/Programming/Python/SculptureFinal/media/final_outline_cropped.JPG')
+	image = imutils.resize(image, width=1120)
 
 print "Build staffer: "
 cur_time = time.time()
@@ -166,11 +177,11 @@ player.terminate()
 ##		#     motion_detected = True
 ##		#     create_song = True
 ##
-##
-##
-##
-##
-##
+
+
+
+
+
 
 
 

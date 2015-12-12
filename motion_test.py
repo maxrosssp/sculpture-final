@@ -1,12 +1,11 @@
 import platform
-
+import sys
 import imutils
 import time
 import cv2
 from staff import Staffer
 from music import Player
 import os
-import sys
 
 ## !!!!!!!!!!!!!!!!!!!!
 ## To set audio output to HDMI: > amixer cset numid=3 2
@@ -18,8 +17,8 @@ MIN_AREA = 1200
 SECONDS_TO_RESET = 20
 TEMPO = 110
 
-if len(sys.args) > 1:
-	image = cv2.imread(sys.args[1])
+if len(sys.argv) > 1:
+	image = cv2.imread(sys.argv[1])
 
 elif platform.system() == 'Linux':
 
